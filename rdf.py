@@ -1,6 +1,12 @@
+#-------------------------------------
+#** Libraries
+#-------------------------------------
 import numpy as np
-from bd_stuff import read_one_frame
+from bd_stuff import read_one_xyz_frame
 
+#-------------------------------------
+# ** Parameters to change **
+#-------------------------------------
 trajfile = "traj_rho_0.2_eps_2.5.xyz"
 box = 20.32
 nbins = 500
@@ -11,7 +17,7 @@ species_A = 1
 species_B = 1
 
 rdf_filename = "rdf_rho_0.2_eps_2.5.dat"
-
+#-------------------------------------
 
 # Initialisation
 total_histogram = np.zeros(nbins)
@@ -34,7 +40,7 @@ with open(trajfile, "r") as f:
                 f.readline()
             continue
 
-        atoms = read_one_frame(f, n_atoms)
+        atoms = read_one_xyz_frame(f, n_atoms)
 
         A = atoms[atoms[:, 0] == species_A][:, 1:4]
         B = atoms[atoms[:, 0] == species_B][:, 1:4]

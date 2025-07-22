@@ -1,5 +1,6 @@
+import numpy as np
 
-def read_one_frame(f, n_atoms):
+def read_one_xyz_frame(f, n_atoms):
     """Lit une frame dans le fichier .xyz et renvoie les atomes"""
     f.readline()  # Skip comment line
     data = []
