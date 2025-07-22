@@ -1,6 +1,6 @@
 import numpy as np
 
-def read_frame(f, n_atoms):
+def read_one_frame(f, n_atoms):
     """Lit une frame dans le fichier .xyz et renvoie les atomes"""
     f.readline()  # Skip comment line
     data = []
@@ -44,7 +44,7 @@ with open(trajfile, "r") as f:
                 f.readline()
             continue
 
-        atoms = read_frame(f, n_atoms)
+        atoms = read_one_frame(f, n_atoms)
 
         A = atoms[atoms[:, 0] == species_A][:, 1:4]
         B = atoms[atoms[:, 0] == species_B][:, 1:4]
