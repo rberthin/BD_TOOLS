@@ -2,6 +2,7 @@
 import argparse
 from rdf import rdf_computation, write_rdf, plot_rdf
 import error_msg
+import os
 
 # Welcome menu
 print('-------------------------------------------------------')
@@ -26,6 +27,9 @@ func_list = ['rdf']
 if args.input:
     inputfile = open(args.input, 'r')
     trajfile = inputfile.readline().rstrip()
+    if not os.path.exists(trajfile):
+        print("The trajfile written in the input does not exist.")
+    
     box = float(inputfile.readline())
     compute = inputfile.readline().rstrip()
 else:
