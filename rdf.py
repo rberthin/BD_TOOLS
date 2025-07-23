@@ -1,6 +1,7 @@
 #** Libraries
 #-------------------------------------
 import numpy as np
+import matplotlib.pyplot as plt
 from bd_stuff import read_one_xyz_frame
 
 
@@ -9,7 +10,6 @@ def rdf_computation(trajfile, box, nbins, start_step,
 
     r_max = box / 2.0
     dr = r_max / nbins
-    rdf_filename = "rdf.dat"
     
     total_histogram = np.zeros(nbins)
     total_steps = 0
@@ -79,8 +79,15 @@ def rdf_computation(trajfile, box, nbins, start_step,
 
     r = (np.arange(nbins) + 0.5) * dr
     g_r = total_histogram / total_steps
+    return r, g_r
 
+def write_rdf(r, g_r):
     # Écriture des résultats
+    rdf_filename = "rdf.dat"
     with open(rdf_filename, "w") as out:
         for radius, value in zip(r, g_r):
             out.write(f"{radius:.5f} {value:.5f}\n")
+
+def plot_rdf(r, g_r):
+    plt.plot(r, g_r)
+    plt.show()

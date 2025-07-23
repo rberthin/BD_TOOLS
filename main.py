@@ -1,6 +1,6 @@
 # librairie à importer
 import argparse
-from rdf import rdf_computation
+from rdf import rdf_computation, write_rdf, plot_rdf
 import error_msg
 
 # Welcome menu
@@ -14,6 +14,9 @@ print('-------------------------------------------------------')
 parser = argparse.ArgumentParser()
 parser.add_argument('-i', '--input', type=str, 
                     help = 'input file containing information about the system')
+
+parser.add_argument('-p', '--plot', action = 'store_true', 
+                                help = 'save a plot in png format')
 args = parser.parse_args()
 
 bool_traj = True
@@ -71,5 +74,9 @@ match compute:
             print('-------------------------------------------')
 
         # call rdf function
-        rdf_computation(trajfile, box, nbins, start_step,
-                        end_step, species_1, species_2)
+        r, g_r = rdf_computation(trajfile, box, nbins, start_step,
+                                 end_step, species_1, species_2)
+        write_rdf(r, g_r)
+
+        if args.plot:
+            plot_rdf(r, g_r)
