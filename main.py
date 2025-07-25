@@ -28,8 +28,11 @@ if args.input:
     inputfile = open(args.input, 'r')
     trajfile = inputfile.readline().rstrip()
     if not os.path.exists(trajfile):
-        print("The trajfile written in the input does not exist.")
-    
+        error_msg.error_traj('else', args.input)
+    else:
+        if not trajfile.endswith('.xyz'):
+            error_msg.error_traj('xyz', args.input)
+
     box = float(inputfile.readline())
     compute = inputfile.readline().rstrip()
 else:
@@ -40,10 +43,14 @@ else:
 
     while bool_traj:
         trajfile = input('Name of the trajectory file?\n')
-        if not trajfile.endswith('.xyz'):
-            error_msg.error_traj()
+        if not os.path.exists(trajfile):
+            error_msg.error_traj('else', args.input)
+
         else:
-            bool_traj = False
+            if not trajfile.endswith('.xyz'):
+                error_msg.error_traj('xyz', args.input)
+            else:
+                bool_traj = False
     
     box = float(input('Length of the box?\n'))
     print('-------------------------------------------------------')

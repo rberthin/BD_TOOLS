@@ -1,4 +1,4 @@
-traj_rho_0.2_eps_2.5.xyz
+taj_rho_0.2_eps_2.5.xyz
 20.32
 rdf
 10
