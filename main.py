@@ -59,6 +59,7 @@ else:
     print('List of functions:')
     print('------------------')
     print('-- Radial distribution function (rdf)')
+    print('-- Force autocorrelation (autoforce)')
     print('-------------------------------------------------------')
     while bool_func:
         compute = input('Which function do you want to compute?\n')
@@ -91,3 +92,16 @@ match compute:
 
         if args.plot:
             plot_rdf(r, g_r)
+
+    case "autoforce":
+        if args.input:
+            forcefile = inputfile.readline().rstrip() 
+            freq = float(inputfile.readline())
+            delta_t = float(inputfile.readline())
+            natoms = int(inputfile.readline())
+
+        else:
+            forcefile = input("Name of the file containing fx, fy, fz? ")
+            freq = input("What is the recording frequency (in Dt unit)?")
+            delta_t = input("What is the timestep ?")
+            natoms = input("Number of atoms ?")
