@@ -1,6 +1,7 @@
 # librairie à importer
 import argparse
 from rdf import rdf_computation, write_rdf, plot_rdf
+from force_autocorrelation import autoforce_computation, write_autoforce, plot_autoforce
 import error_msg
 import os
 
@@ -22,7 +23,7 @@ args = parser.parse_args()
 
 bool_traj = True
 bool_func = True
-func_list = ['rdf']
+func_list = ['rdf', 'autoforce']
 
 if args.input:
     inputfile = open(args.input, 'r')
@@ -94,14 +95,30 @@ match compute:
             plot_rdf(r, g_r)
 
     case "autoforce":
+        bool_forces = True
         if args.input:
             forcefile = inputfile.readline().rstrip() 
-            freq = float(inputfile.readline())
+            if not os.path.exists(forcefile):
+                error_msg.error_file('forces', args.input)
+            freq = int(inputfile.readline())
             delta_t = float(inputfile.readline())
             natoms = int(inputfile.readline())
 
         else:
-            forcefile = input("Name of the file containing fx, fy, fz? ")
-            freq = input("What is the recording frequency (in Dt unit)?")
-            delta_t = input("What is the timestep ?")
-            natoms = input("Number of atoms ?")
+            while bool_forces:
+                forcefile = input("Name of the file containing fx, fy, fz?\n")
+                if not os.path.exists(forcefile):
+                    error_msg.error_file('forces', args.input)
+                else:
+                    bool_forces = False
+
+            freq = int(input("What is the recording frequency (in Dt unit)?\n"))
+            delta_t = float(input("What is the timestep?\n"))
+            natoms = int(input("Number of atoms?\n"))
+
+        X, Z = autoforce_computation(forcefile, freq, delta_t, natoms)
+        
+        write_autoforce(X, Z)
+
+        if args.plot:
+            plot_autoforce(X, Z)

@@ -89,5 +89,14 @@ def write_rdf(r, g_r):
             out.write(f"{radius:.5f} {value:.5f}\n")
 
 def plot_rdf(r, g_r):
+    fig = plt.figure(figsize=(6,6), tight_layout = True)
+    name_file_save=r'rdf'
+    name_file_save+='.png'
+
     plt.plot(r, g_r)
-    plt.show()
+ 
+    plt.xlabel(r'r', fontsize = 14)
+    plt.ylabel(r'g(r)', fontsize = 14)
+
+    fig.savefig(name_file_save, bbox_inches='tight')
+
