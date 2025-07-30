@@ -99,4 +99,4 @@ def plot_rdf(r, g_r):
     plt.ylabel(r'g(r)', fontsize = 14)
 
     fig.savefig(name_file_save, bbox_inches='tight')
-
+    print('Plot saved in rdf.png ! ')

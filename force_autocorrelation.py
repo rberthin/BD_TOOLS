@@ -19,6 +19,7 @@ def autoforce_computation(forcefile, freq, delta_t, natoms):
 
     # Calcul de l'autocorrélation pour chaque particule (vectorisé sur k)
     for t in range(nsteps):
+        print('Step', t)
         # vecteurs force à t=0 et t décalé
         a1 = forces[:nsteps - t]
         a2 = forces[t:]
@@ -46,4 +47,5 @@ def plot_autoforce(X, Z):
     plt.ylabel(r'< F(0) . F(t) >', fontsize = 14)
 
     fig.savefig(name_file_save, bbox_inches='tight')
+    print('Plot saved in autocorr_forces.png ! ')
 
