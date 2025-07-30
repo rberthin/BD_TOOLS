@@ -1,3 +1,34 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+===============================================================================
+Script        : bd_tool.py
+Auteur        : Roxanne BERTHIN
+Créé le       : 30/07/25
+Description   : Ce code permet le calcul de plusieurs fonctions utiles dans le 
+                cas de l'analyse de trajectoire de dynamique brownienne ou de 
+                dynamique moleculaire
+
+Utilisation   : 
+    python nom_du_script.py [options]
+
+Arguments     :
+    -i, --input     : Chemin du fichier d’input. Si aucun fichier d'input alors 
+                      le script posera des questions
+    -p, --plot      : permet de tracer le résultat 
+    -h, --help      : Affiche ce message d’aide
+
+Dépendances   :
+    - numpy
+    - matplotlib (facultatif)
+
+Notes         : RAS
+
+Licence       : RAS 
+
+===============================================================================
+"""
+
 # librairie à importer
 import argparse
 from rdf import rdf_computation, write_rdf, plot_rdf
@@ -27,33 +58,11 @@ func_list = ['rdf', 'autoforce']
 
 if args.input:
     inputfile = open(args.input, 'r')
-    trajfile = inputfile.readline().rstrip()
-    if not os.path.exists(trajfile):
-        error_msg.error_traj('else', args.input)
-    else:
-        if not trajfile.endswith('.xyz'):
-            error_msg.error_traj('xyz', args.input)
-
-    box = float(inputfile.readline())
     compute = inputfile.readline().rstrip()
+    print('Reading file {}\n'.format(args.input))
 else:
     print('No input file specified ...\n')
-    print('-------------------------------------------------------')
-    print('----------------- GENERAL INFORMATION -----------------')
-    print('-------------------------------------------------------')
 
-    while bool_traj:
-        trajfile = input('Name of the trajectory file?\n')
-        if not os.path.exists(trajfile):
-            error_msg.error_traj('else', args.input)
-
-        else:
-            if not trajfile.endswith('.xyz'):
-                error_msg.error_traj('xyz', args.input)
-            else:
-                bool_traj = False
-    
-    box = float(input('Length of the box?\n'))
     print('-------------------------------------------------------')
     print('--------------------- COMPUTATION ---------------------')
     print('-------------------------------------------------------')
@@ -61,6 +70,8 @@ else:
     print('------------------')
     print('-- Radial distribution function (rdf)')
     print('-- Force autocorrelation (autoforce)')
+    print('-- Mean square displacement (msd) a venir')
+    print('-- Droplet analysis (droplet) a venir')
     print('-------------------------------------------------------')
     while bool_func:
         compute = input('Which function do you want to compute?\n')
@@ -72,6 +83,15 @@ else:
 match compute:
     case "rdf":
         if args.input:
+            trajfile = inputfile.readline().rstrip()
+            if not os.path.exists(trajfile):
+                error_msg.error_traj('else', args.input)
+            else:
+                if not trajfile.endswith('.xyz'):
+                    error_msg.error_traj('xyz', args.input)
+
+            box = float(inputfile.readline())
+
             nbins = int(inputfile.readline())
             start_step = int(inputfile.readline())
             end_step = int(inputfile.readline())
@@ -79,6 +99,18 @@ match compute:
             species_2 = inputfile.readline().rstrip()
             inputfile.close()
         else:
+            while bool_traj:
+                trajfile = input('Name of the trajectory file?\n')
+                if not os.path.exists(trajfile):
+                    error_msg.error_traj('else', args.input)
+
+                else:
+                    if not trajfile.endswith('.xyz'):
+                        error_msg.error_traj('xyz', args.input)
+                    else:
+                        bool_traj = False
+
+            box = float(input('Length of the box?\n'))
             nbins = int(input('Number of bins?\n'))
             start_step = int(input('Starting step for the computation of rdf?\n'))
             end_step = int(input('Ending step for the computation of rdf?\n'))
