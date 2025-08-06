@@ -1,0 +1,5 @@
+autoforce           # function to compute    
+forcesB_9724301.out # name of the forces file
+10                  # frequency of written forces in dt
+0.0001              # timestep (dt)
+20                  # number of particles for each step

@@ -1,0 +1,8 @@
+rdf                      # function to compute
+traj_rho_0.2_eps_2.5.xyz # trajectory file
+20.32			 # box size
+400			 # number of bins
+1                        # starting step
+200                      # ending step
+1                        # name of reference species
+1                        # name of observed species

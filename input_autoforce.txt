@@ -1,5 +1,0 @@
-autoforce            
-forcesB_9724301.out
-10
-0.0001
-20
