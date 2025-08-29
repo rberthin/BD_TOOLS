@@ -33,7 +33,7 @@ Licence       : RAS
 import argparse
 from rdf import rdf_computation, write_rdf, plot_rdf
 from force_autocorrelation import autoforce_computation, write_autoforce, plot_autoforce
-from bd_stuff import unwrap_xyz_traj
+from bd_stuff import unwrap_xyz_traj, write_unwrap
 import error_msg
 import os
 
@@ -71,6 +71,7 @@ else:
     print('------------------')
     print('-- Radial distribution function (rdf)')
     print('-- Force autocorrelation (autoforce)')
+    print('-- Unwrap trajectory (unwrap)')
     print('-- Mean square displacement (msd) a venir')
     print('-- Droplet analysis (droplet) a venir')
     print('-------------------------------------------------------')
@@ -155,7 +156,26 @@ match compute:
 
         if args.plot:
             plot_autoforce(X, Z)
-    
+
+    case "unwrap":
+        if args.input:
+            trajfile = inputfile.readline().rstrip()
+            if not os.path.exists(trajfile):
+                error_msg.error_traj('else', args.input)
+            else:
+                if not trajfile.endswith('.xyz'):
+                    error_msg.error_traj('xyz', args.input)
+
+            box = float(inputfile.readline())
+            n_atoms = int(inputfile.readline())
+            start_step = int(inputfile.readline())
+            end_step = int(inputfile.readline())
+
+        # !! faire le else !!
+
+        label, xx, yy, zz = unwrap_xyz_traj(trajfile, box, n_atoms, start_step, end_step)
+        write_unwrap(label, xx, yy, zz)
+
     case "msd":
         if args.input:
             trajfile = inputfile.readline().rstrip()
