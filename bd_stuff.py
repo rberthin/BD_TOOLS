@@ -51,11 +51,11 @@ def unwrap_xyz_traj(trajfile, box, n_atoms, start_step, end_step):
     pos_x = coord_x[:, start_step:end_step]
     pos_y = coord_y[:, start_step:end_step]
     pos_z = coord_z[:, start_step:end_step]
-    print(np.shape(pos_x))
+    
     xx = np.zeros( (n_atoms, shape) )
     yy = np.zeros( (n_atoms, shape) )
     zz = np.zeros( (n_atoms, shape) )
-    print(np.shape(xx))
+    
     for i in range(n_atoms):
         xx[i, 0] = pos_x[i, 0]
         yy[i, 0] = pos_y[i, 0]

@@ -55,7 +55,7 @@ args = parser.parse_args()
 
 bool_traj = True
 bool_func = True
-func_list = ['rdf', 'autoforce']
+func_list = ['rdf', 'autoforce', 'unwrap']
 
 if args.input:
     inputfile = open(args.input, 'r')
@@ -118,7 +118,7 @@ match compute:
             end_step = int(input('Ending step for the computation of rdf?\n'))
             species_1 = input('Reference specie?\n')
             species_2 = input('Observed specie?\n')
-            print('-------------------------------------------')
+            print('-------------------------------------------------------')
 
         # call rdf function
         r, g_r = rdf_computation(trajfile, box, nbins, start_step,
@@ -136,7 +136,7 @@ match compute:
                 error_msg.error_file('forces', args.input)
             freq = int(inputfile.readline())
             delta_t = float(inputfile.readline())
-            natoms = int(inputfile.readline())
+            n_atoms = int(inputfile.readline())
 
         else:
             while bool_forces:
@@ -148,9 +148,10 @@ match compute:
 
             freq = int(input("What is the recording frequency (in Dt unit)?\n"))
             delta_t = float(input("What is the timestep?\n"))
-            natoms = int(input("Number of atoms?\n"))
+            n_atoms = int(input("Number of atoms?\n"))
+            print('-------------------------------------------------------')
 
-        X, Z = autoforce_computation(forcefile, freq, delta_t, natoms)
+        X, Z = autoforce_computation(forcefile, freq, delta_t, n_atoms)
         
         write_autoforce(X, Z)
 
@@ -171,7 +172,23 @@ match compute:
             start_step = int(inputfile.readline())
             end_step = int(inputfile.readline())
 
-        # !! faire le else !!
+        else:
+            while bool_traj:
+                trajfile = input('Name of the trajectory file?\n')
+                if not os.path.exists(trajfile):
+                    error_msg.error_traj('else', args.input)
+
+                else:
+                    if not trajfile.endswith('.xyz'):
+                        error_msg.error_traj('xyz', args.input)
+                    else:
+                        bool_traj = False
+
+            box = float(input('Length of the box?\n'))
+            n_atoms = int(input('Number of atoms?\n'))
+            start_step = int(input('Starting step for the unwrap of the trajectory?\n'))
+            end_step = int(input('Ending step for the unwrap of the trajectory?\n'))
+            print('-------------------------------------------------------')
 
         label, xx, yy, zz = unwrap_xyz_traj(trajfile, box, n_atoms, start_step, end_step)
         write_unwrap(label, xx, yy, zz)

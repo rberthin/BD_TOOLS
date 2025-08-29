@@ -1,0 +1,6 @@
+unwrap                   # function to compute
+traj_rho_0.2_eps_2.5.xyz # trajectory file
+20.32			 # box size
+200			 # number of atoms
+0                        # starting step
+40000         		 # ending step
