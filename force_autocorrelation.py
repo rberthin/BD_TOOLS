@@ -1,15 +1,15 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
-def autoforce_computation(forcefile, freq, delta_t, natoms):
+def autoforce_computation(forcefile, freq, delta_t, n_atoms):
     fx, fy, fz = np.loadtxt(forcefile, unpack=True)
 
-    nsteps = fx.shape[0] // natoms
+    nsteps = fx.shape[0] // n_atoms
 
     # Reshape des forces : (nsteps, natoms)
-    fxx = fx.reshape(nsteps, natoms)
-    fyy = fy.reshape(nsteps, natoms)
-    fzz = fz.reshape(nsteps, natoms)
+    fxx = fx.reshape(nsteps, n_atoms)
+    fyy = fy.reshape(nsteps, n_atoms)
+    fzz = fz.reshape(nsteps, n_atoms)
 
     # Stack des composantes en un seul tableau : (nsteps, 100, 3)
     forces = np.stack((fxx, fyy, fzz), axis=2)

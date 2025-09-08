@@ -33,6 +33,7 @@ Licence       : RAS
 import argparse
 from rdf import rdf_computation, write_rdf, plot_rdf
 from force_autocorrelation import autoforce_computation, write_autoforce, plot_autoforce
+from msd import msd_computation, write_msd, plot_msd
 from bd_stuff import unwrap_xyz_traj, write_unwrap
 import error_msg
 import os
@@ -206,8 +207,25 @@ match compute:
             n_atoms = int(inputfile.readline())
             start_step = int(inputfile.readline())
             end_step = int(inputfile.readline())
-            
-        # !! faire le else !!
+            selected_species = inputfile.readline()     
+        else:
+            while bool_traj:
+                trajfile = input('Name of the trajectory file?\n')
+                if not os.path.exists(trajfile):
+                    error_msg.error_traj('else', args.input)
+
+                else:
+                    if not trajfile.endswith('.xyz'):
+                        error_msg.error_traj('xyz', args.input)
+                    else:
+                        bool_traj = False
+
+            box = float(input('Length of the box?\n'))
+            n_atoms = int(input('Number of atoms?\n'))
+            start_step = int(input('Starting step for the unwrap of the trajectory?\n'))
+            end_step = int(input('Ending step for the unwrap of the trajectory?\n'))
+            print('-------------------------------------------------------')
+
 
         label, xx, yy, zz = unwrap_xyz_traj(trajfile, box, n_atoms, start_step, end_step) 
 

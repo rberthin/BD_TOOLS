@@ -13,7 +13,7 @@ def read_one_xyz_frame(f, n_atoms):
 
 #*************************************************************
 def read_all_xyz_traj(trajfile, n_atoms, end_step):
-    label = np.zeros( (n_atoms, end_step) )
+    label = np.zeros( (n_atoms, end_step), dtype=str)
     coord_x = np.zeros( (n_atoms, end_step) )
     coord_y = np.zeros( (n_atoms, end_step) )
     coord_z = np.zeros( (n_atoms, end_step) )
@@ -25,7 +25,7 @@ def read_all_xyz_traj(trajfile, n_atoms, end_step):
             for j in range(n_atoms):
 
                 parts = f.readline().split()
-                label[j, i] = parts[0]
+                label[j, i] = str(parts[0])
                 coord_x[j, i] = parts[1]
                 coord_y[j, i] = parts[2]
                 coord_z[j, i] = parts[3]
@@ -45,6 +45,7 @@ def minimum_image_convention(pos, box):
 #*************************************************************
 def unwrap_xyz_traj(trajfile, box, n_atoms, start_step, end_step):
     label, coord_x, coord_y, coord_z = read_all_xyz_traj(trajfile, n_atoms, end_step)
+    print(label[0], label[3])
     shape = end_step - start_step
     
     typ = label[:, start_step:end_step]
@@ -77,7 +78,7 @@ def write_unwrap(typ, xx, yy, zz):
         f_out.write('{0}\n'.format(np.shape(xx)[0]))
         f_out.write('Step {0}\n'.format(j))
         for i in range(np.shape(xx)[0]):
-            f_out.write('{0}   {1}   {2}   {3}\n'.format(
+            f_out.write('{}   {:.5f}   {:.5f}   {:.5f}\n'.format(
                 typ[i,j], xx[i,j], yy[i,j], zz[i, j]))
 
 #*************************************************************
