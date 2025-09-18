@@ -45,7 +45,6 @@ def minimum_image_convention(pos, box):
 #*************************************************************
 def unwrap_xyz_traj(trajfile, box, n_atoms, start_step, end_step):
     label, coord_x, coord_y, coord_z = read_all_xyz_traj(trajfile, n_atoms, end_step)
-    print(label[0], label[3])
     shape = end_step - start_step
     
     typ = label[:, start_step:end_step]

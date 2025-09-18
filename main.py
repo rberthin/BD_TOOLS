@@ -56,7 +56,7 @@ args = parser.parse_args()
 
 bool_traj = True
 bool_func = True
-func_list = ['rdf', 'autoforce', 'unwrap']
+func_list = ['rdf', 'autoforce', 'unwrap', 'msd']
 
 if args.input:
     inputfile = open(args.input, 'r')
@@ -224,8 +224,10 @@ match compute:
             n_atoms = int(input('Number of atoms?\n'))
             start_step = int(input('Starting step for the unwrap of the trajectory?\n'))
             end_step = int(input('Ending step for the unwrap of the trajectory?\n'))
+            selected_species = input('On which species do you want to compute msd?\n')
             print('-------------------------------------------------------')
 
 
         label, xx, yy, zz = unwrap_xyz_traj(trajfile, box, n_atoms, start_step, end_step) 
-
+        time, msd = msd_computation(label, xx, yy, zz, start_step, end_step, selected_species)
+        write_msd(time, msd)
