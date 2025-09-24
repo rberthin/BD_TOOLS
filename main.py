@@ -204,6 +204,8 @@ match compute:
                     error_msg.error_traj('xyz', args.input)
 
             box = float(inputfile.readline())        
+            freq = int(inputfile.readline())
+            delta_t = float(inputfile.readline())
             n_atoms = int(inputfile.readline())
             start_step = int(inputfile.readline())
             end_step = int(inputfile.readline())
@@ -221,13 +223,17 @@ match compute:
                         bool_traj = False
 
             box = float(input('Length of the box?\n'))
+            freq = int(input("What is the recording frequency (in Dt unit)?\n"))
+            delta_t = float(input("What is the timestep?\n"))
             n_atoms = int(input('Number of atoms?\n'))
             start_step = int(input('Starting step for the unwrap of the trajectory?\n'))
             end_step = int(input('Ending step for the unwrap of the trajectory?\n'))
             selected_species = input('On which species do you want to compute msd?\n')
             print('-------------------------------------------------------')
 
-
+        print('-- Unwraping trajectory ... ---------------------------') 
         label, xx, yy, zz = unwrap_xyz_traj(trajfile, box, n_atoms, start_step, end_step) 
+        print('-- Trajectory unwraped ! ------------------------------\n')
+        print('-- Starting the msd computation ... -------------------')
         time, msd = msd_computation(label, xx, yy, zz, start_step, end_step, selected_species)
         write_msd(time, msd)

@@ -46,28 +46,28 @@ def minimum_image_convention(pos, box):
 def unwrap_xyz_traj(trajfile, box, n_atoms, start_step, end_step):
     label, coord_x, coord_y, coord_z = read_all_xyz_traj(trajfile, n_atoms, end_step)
     shape = end_step - start_step
-    
-    typ = label[:, start_step:end_step]
-    pos_x = coord_x[:, start_step:end_step]
-    pos_y = coord_y[:, start_step:end_step]
-    pos_z = coord_z[:, start_step:end_step]
-    
+   
+    typ = label[:,start_step:end_step]
+
     xx = np.zeros( (n_atoms, shape) )
     yy = np.zeros( (n_atoms, shape) )
     zz = np.zeros( (n_atoms, shape) )
     
     for i in range(n_atoms):
-        xx[i, 0] = pos_x[i, 0]
-        yy[i, 0] = pos_y[i, 0]
-        zz[i, 0] = pos_z[i, 0]
+        xx[i, 0] = coord_x[i, start_step]
+        yy[i, 0] = coord_y[i, start_step]
+        zz[i, 0] = coord_z[i, start_step]
+
         for j in range(1, end_step):
-            dx = minimum_image_convention(pos_x[i, j] - pos_x[i, j-1], box)
-            dy = minimum_image_convention(pos_y[i, j] - pos_y[i, j-1], box)
-            dz = minimum_image_convention(pos_z[i, j] - pos_z[i, j-1], box)
+            if j > start_step:
+                dx = minimum_image_convention(coord_x[i, j] - coord_x[i, j-1], box)
+                dy = minimum_image_convention(coord_y[i, j] - coord_y[i, j-1], box)
+                dz = minimum_image_convention(coord_z[i, j] - coord_z[i, j-1], box)
             
-            xx[i,j] = xx[i, j-1] + dx
-            yy[i,j] = yy[i, j-1] + dy
-            zz[i,j] = zz[i, j-1] + dz
+                xx[i,j-start_step] = xx[i, j-start_step-1] + dx
+                yy[i,j-start_step] = yy[i, j-start_step-1] + dy
+                zz[i,j-start_step] = zz[i, j-start_step-1] + dz
+    
     return typ, xx, yy, zz
 
 #*************************************************************
