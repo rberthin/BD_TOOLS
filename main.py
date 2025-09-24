@@ -235,5 +235,5 @@ match compute:
         label, xx, yy, zz = unwrap_xyz_traj(trajfile, box, n_atoms, start_step, end_step) 
         print('-- Trajectory unwraped ! ------------------------------\n')
         print('-- Starting the msd computation ... -------------------')
-        time, msd = msd_computation(label, xx, yy, zz, start_step, end_step, selected_species)
+        time, msd = msd_computation(label, xx, yy, zz, delta_t, freq, start_step, end_step, selected_species)
         write_msd(time, msd)

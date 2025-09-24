@@ -1,8 +1,8 @@
 import numpy as np
 import matplotlib.pyplot as plt
-from collections import Counter
+from scipy import stats
 
-def msd_computation(label, xx, yy, zz, start_step, end_step, selected_species):
+def msd_computation(label, xx, yy, zz, delta_t, freq, start_step, end_step, selected_species):
     name_type, count_type = np.unique(label[:,0], return_counts=True)
     index = np.where(name_type == selected_species.strip())
     nselected = count_type[index][0]
@@ -40,6 +40,8 @@ def msd_computation(label, xx, yy, zz, start_step, end_step, selected_species):
         else:
             msd[k] = 0
     time = np.arange(size_sample)
+    diff, intercept, r, p, se = stats.linregress(time[:int(size_sample/2)], msd[:int(size_sample/2)])
+    print('Diffusion coefficient estimated : {}\n'.format(round(diff/(delta_t*freq), 3)))
     return time, msd
 
 def write_msd(time, msd):
