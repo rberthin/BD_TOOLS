@@ -40,24 +40,24 @@ def msd_computation(label, xx, yy, zz, delta_t, freq, start_step, end_step, sele
         else:
             msd[k] = 0
     time = np.arange(size_sample)
-    diff, intercept, r, p, se = stats.linregress(time[:int(size_sample/2)], msd[:int(size_sample/2)])
+    diff, intercept, r, p, se = stats.linregress(time[1:int(size_sample/2)], msd[1:int(size_sample/2)])
     print('Diffusion coefficient estimated : {}\n'.format(round(diff/(delta_t*freq), 3)))
     return time, msd
 
 def write_msd(time, msd):
     fileout = 'msd.out'
-    np.savetxt(fileout, np.c_[time, msd])
+    np.savetxt(fileout, np.c_[time[1:], msd[1:]])
 
-def plot_msd(X, Z):
+def plot_msd(time, msd):
     fig = plt.figure(figsize=(6,6), tight_layout = True)
-    name_file_save=r'autocorr_forces'
+    name_file_save=r'msd'
     name_file_save+='.png'
 
-    plt.plot(X, Z)
+    plt.plot(time, msd)
     plt.xlabel(r't', fontsize = 14)
-    plt.ylabel(r'< F(0) . F(t) >', fontsize = 14)
+    plt.ylabel(r'MSD', fontsize = 14)
 
     fig.savefig(name_file_save, bbox_inches='tight')
-    print('Plot saved in autocorr_forces.png ! ')
+    print('Plot saved in msd.png ! ')
 
 

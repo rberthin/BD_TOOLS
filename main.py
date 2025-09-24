@@ -237,3 +237,7 @@ match compute:
         print('-- Starting the msd computation ... -------------------')
         time, msd = msd_computation(label, xx, yy, zz, delta_t, freq, start_step, end_step, selected_species)
         write_msd(time, msd)
+        
+        if args.plot:
+            plot_msd(time, msd)
+
