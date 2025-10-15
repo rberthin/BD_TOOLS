@@ -1,0 +1,9 @@
+msd          # function to compute
+traj_WCA.xyz # trajectory file
+15.0         # box length
+5000         # recording traj frenquency
+0.0002       # timestep
+3820         # total number of atoms
+5000         # starting step
+10000        # ending step
+3            # name of the species

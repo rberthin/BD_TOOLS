@@ -21,27 +21,21 @@ def msd_computation(label, xx, yy, zz, delta_t, freq, start_step, end_step, sele
                 z_type[count, i] = zz[j,i]
                 count += 1
     
+    coords = np.stack([x_type, y_type, z_type], axis=-1)
+    
     msd = np.zeros( (size_sample) )
-    sum_r2 = np.zeros( (size_sample) )
 
     for k in range(1, size_sample):
-        count = 0
-        for i in range(size_sample - k):
-            sum_r2[:] = 0.0 
-            for j in range(nselected):
-                dx = x_type[j,i+k] - x_type[j,i]
-                dy = y_type[j,i+k] - y_type[j,i]
-                dz = z_type[j,i+k] - z_type[j,i]
-                sum_r2[i] = sum_r2[i] + (dx**2 + dy**2 + dz**2)
-            msd[k] = msd[k] + sum_r2[i]
-            count = count + nselected
-        if count > 0:
-            msd[k] = msd[k] / count
-        else:
-            msd[k] = 0
+        print('Step', k, '/', size_sample)
+        disp = coords[:, k:] - coords[:, :-k]   # shape (nselected, size_sample-k, 3)
+        sqdist = np.sum(disp**2, axis=-1)       # shape (nselected, size_sample-k)
+        msd[k] = np.mean(sqdist)                # moyenne directe
+
     time = np.arange(size_sample)
     diff, intercept, r, p, se = stats.linregress(time[1:int(size_sample/2)], msd[1:int(size_sample/2)])
+    
     print('Diffusion coefficient estimated : {}\n'.format(round(diff/(delta_t*freq), 3)))
+    
     return time, msd
 
 def write_msd(time, msd):

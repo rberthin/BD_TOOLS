@@ -30,7 +30,7 @@ def read_all_xyz_traj(trajfile, n_atoms, end_step):
                 coord_y[j, i] = parts[2]
                 coord_z[j, i] = parts[3]
     
-    return np.array(label), np.array(coord_x, dtype=float), np.array(coord_y, dtype=float), np.array(coord_z, dtype=float)
+    return np.array(label, dtype=str), np.array(coord_x, dtype=float), np.array(coord_y, dtype=float), np.array(coord_z, dtype=float)
 
 #*************************************************************
 def minimum_image_convention(pos, box):
